@@ -1,11 +1,9 @@
 <!-- FOOTER -->
-<footer class="container-fluid bg-dark text-light">
-    <p class="float-end"><a href="#">Back to top</a></p>
-    <p>&copy; 2017-2021 Company, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
-</footer>
-
+<?php get_template_part("template-parts/footer/footer"); ?>
 
 <?php wp_footer(); ?>
+
+<script src="<?php echo get_stylesheet_directory_uri() . "/js/mtrabski-bundle.js"; ?>"></script>
 </body>
 
 </html>

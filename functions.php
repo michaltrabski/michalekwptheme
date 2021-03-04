@@ -1,17 +1,24 @@
 <?php
 
-
-
-if (!function_exists('michalekwptheme_register_nav_menu')) {
-    function michalekwptheme_register_nav_menu()
-    {
-        register_nav_menus(array(
-            'top_menu' => __('Menu górne', 'text_domaina'),
-
-        ));
-    }
-    add_action('after_setup_theme', 'michalekwptheme_register_nav_menu', 0);
+// SHORTCODES
+function print_year($atts)
+{
+    return date("Y");
 }
+add_shortcode('year', 'print_year');
+
+
+
+
+// if (!function_exists('michalekwptheme_register_nav_menu')) {
+//     function michalekwptheme_register_nav_menu()
+//     {
+//         register_nav_menus(array(
+//             'top_menu' => __('Menu górne', 'text_domaina')
+//         ));
+//     }
+//     add_action('after_setup_theme', 'michalekwptheme_register_nav_menu', 0);
+// }
 
 
 
@@ -128,11 +135,8 @@ function michalekwptheme_add_content($postType, $title, $content, $pageTemplate 
 function michalekwptheme_register_styles()
 {
     $version = wp_get_theme()->get("Version");
-    wp_enqueue_style("bootstrap5", "https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css", array(), $version, "all");
-    wp_enqueue_style("bootstrap5icons", "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css", array(), $version, "all");
-
-    wp_enqueue_style("mtrabski-bundle", get_template_directory_uri() . "/css/mt-bundle.css", array(), $version, "all");
-    wp_enqueue_style("mtrabski-style", get_template_directory_uri() . "/style.css", array("mtrabski-bundle"), $version, "all");
+    wp_enqueue_style("mtrabski", get_stylesheet_directory_uri() . "/css/bundle.css", array(), $version, "all");
+    wp_enqueue_style("font-awesome", "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css", array(), $version, "all");
 }
 add_action("wp_enqueue_scripts", "michalekwptheme_register_styles");
 
@@ -142,7 +146,7 @@ function michalekwptheme_register_scripts()
 {
     $version = wp_get_theme()->get("Version");
     wp_enqueue_script("bootstrap5", "https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js", array(), $version, true);
-    wp_enqueue_script("michalekwptheme", get_stylesheet_directory_uri() . "/js/bundle.js", array(), $version, true);
+    // wp_enqueue_script("michalekwptheme", get_stylesheet_directory_uri() . "/js/bundle.js", array(), $version, true);
 }
 add_action("wp_enqueue_scripts", "michalekwptheme_register_scripts");
 
@@ -291,55 +295,54 @@ add_action("wp_enqueue_scripts", "michalekwptheme_register_scripts");
 
 function michalekwptheme_register_post_type()
 {
+    $custom_post_types = [
+        array("name" => "Menu górne", "slug" => "menu"),
+        array("name" => "Footer", "slug" => "footer")
+    ];
 
-    // Set UI labels for Custom Post Type
-    $labels = array(
-        'name'                => "Strona główna",
-        'singular_name'       => "Strona główna",
-        // 'menu_name'           => __('Movies', 'twentytwenty'),
-        // 'parent_item_colon'   => __('Parent Movie', 'twentytwenty'),
-        'all_items'           => "Elementy strony głównej",
-        'view_item'           => "Zobacz elementy strony głównej",
-        'add_new_item'        => "Dodaj element",
-        'add_new'             => "Dodaj element",
-        'edit_item'           => "Edytuj element strony głównej",
-        // 'update_item'         => __('Update Movie', 'twentytwenty'),
-        'search_items'        => "Wyszukaj element strony głównej",
-        'not_found'           => "Nie znaleziono elementu strony głównej",
-        'not_found_in_trash'  => "Nie znaleziono elementu strony głównej w koszu",
-    );
-
-    // Set other options for Custom Post Type
-
-    $args = array(
-        'label'               => "lebel",
-        'description'         => "opisssss",
-        'labels'              => $labels,
-        // Features this CPT supports in Post Editor
-        'supports'            => array('title', 'editor', 'excerpt', 'author', 'thumbnail', 'comments', 'revisions', 'custom-fields',),
-        // You can associate this CPT with a taxonomy or custom taxonomy. 
-        // 'taxonomies'          => array('genres'),
-        /* A hierarchical CPT is like Pages and can have
+    for ($i = 0; $i < count($custom_post_types); $i++) {
+        $custom_post_type_args = array(
+            'label'               => "lebel",
+            'description'         => "opisssss",
+            'labels'              => array(
+                'name'                => $custom_post_types[$i]["name"],
+                'singular_name'       => $custom_post_types[$i]["name"],
+                // 'menu_name'           => __('Movies', 'twentytwenty'),
+                // 'parent_item_colon'   => __('Parent Movie', 'twentytwenty'),
+                'all_items'           => "Elementy top menu",
+                'view_item'           => "Zobacz elementy top menu",
+                'add_new_item'        => "Dodaj element",
+                'add_new'             => "Dodaj element",
+                'edit_item'           => "Edytuj element top menu",
+                // 'update_item'         => __('Update Movie', 'twentytwenty'),
+                'search_items'        => "Wyszukaj element top menu",
+                'not_found'           => "Nie znaleziono elementu top menu",
+                'not_found_in_trash'  => "Nie znaleziono elementu top menu w koszu",
+            ),
+            // Features this CPT supports in Post Editor
+            'supports'            => array('title', 'editor', 'excerpt', 'author', 'thumbnail', 'comments', 'revisions', 'custom-fields',),
+            // You can associate this CPT with a taxonomy or custom taxonomy. 
+            // 'taxonomies'          => array('genres'),
+            /* A hierarchical CPT is like Pages and can have
             * Parent and child items. A non-hierarchical CPT
             * is like Posts.
             */
-        'hierarchical'        => false,
-        'public'              => true,
-        'show_ui'             => true,
-        'show_in_menu'        => true,
-        'show_in_nav_menus'   => true,
-        'show_in_admin_bar'   => true,
-        'menu_position'       => 5,
-        'can_export'          => true,
-        'has_archive'         => true,
-        'exclude_from_search' => false,
-        'publicly_queryable'  => true,
-        'capability_type'     => 'post',
-        'show_in_rest' => true,
+            'hierarchical'        => false,
+            'public'              => true,
+            'show_ui'             => true,
+            'show_in_menu'        => true,
+            'show_in_nav_menus'   => true,
+            'show_in_admin_bar'   => true,
+            'menu_position'       => 5,
+            'can_export'          => true,
+            'has_archive'         => true,
+            'exclude_from_search' => false,
+            'publicly_queryable'  => true,
+            'capability_type'     => 'post',
+            'show_in_rest' => true,
 
-    );
-
-    // Registering your Custom Post Type
-    register_post_type('strona-glowna', $args);
+        );
+        register_post_type($custom_post_types[$i]["slug"], $custom_post_type_args);
+    }
 }
 add_action('init', 'michalekwptheme_register_post_type', 0);

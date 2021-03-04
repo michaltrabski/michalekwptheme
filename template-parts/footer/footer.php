@@ -6,7 +6,7 @@
  */
 
 $args = array(
-    'post_type' => 'menu',
+    'post_type' => 'footer',
     'post_status' => 'publish',
     'posts_per_page' => -1,
     'orderby' => 'title',

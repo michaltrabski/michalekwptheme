@@ -1,10 +1,10 @@
 const path = require("path");
 
 module.exports = {
-  entry: "./mtrabski/ts/app.ts",
+  entry: "./ts/app.ts",
   output: {
-    filename: "mtrabski__bundle.js",
-    path: path.resolve(__dirname, "mtrabski/js"),
+    filename: "mtrabski-bundle.js",
+    path: path.resolve(__dirname, "js"),
     publicPath: "js",
   },
   devtool: "inline-source-map",
