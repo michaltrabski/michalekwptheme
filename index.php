@@ -7,20 +7,28 @@
                 <div class="row">
                     <div class="col-md-8 bg-white">
                         <?php if (have_posts()) : ?>
+
                             <?php while (have_posts()) : the_post(); ?>
-                                <article id="<?php echo get_post_type(); ?>-<?php the_ID(); ?>" <?php post_class(); ?>>
+                                <article class="mb-4" id="<?php echo get_post_type(); ?>-<?php the_ID(); ?>" <?php post_class(); ?>>
                                     <!-- TITLE  -->
-                                    <h1 class="mt__<?php echo get_post_type(); ?>-title"><?php the_title(); ?></h1>
 
-                                    <!-- TIME  -->
-                                    <time class="mt__<?php echo get_post_type(); ?>-time" datetime="<?php echo get_the_date('c'); ?>" itemprop="datePublished"><?php echo get_the_date(); ?></time>
+                                    <h2 class="mt__<?php echo get_post_type(); ?>-title ">
+                                        <a href="<?php echo get_permalink() ?>" class="text-dark text-decoration-none">
+                                            <?php the_title(); ?>
+                                        </a>
+                                    </h2>
+                                    <a href="<?php echo get_permalink() ?>" class="btn btn-primary">Czytaj całość</a>
 
-                                    <!-- CONTENT  -->
-                                    <div class="mt__<?php echo get_post_type(); ?>-content">
-                                        <?php the_content(); ?>
-                                    </div>
                                 </article>
                             <?php endwhile; ?>
+
+                            <div class="mt__pagination">
+                                <?php the_posts_pagination(array(
+                                    'mid_size'  => 1,
+                                    'prev_text' => __('Poprzednia', 'textdomain'),
+                                    'next_text' => __('Następna', 'textdomain'),
+                                )); ?>
+                            </div>
 
                         <?php else : ?>
                             <p><?php _e('Sorry, no posts matched your criteria.'); ?></p>

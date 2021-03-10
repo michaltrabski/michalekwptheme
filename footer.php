@@ -1,3 +1,5 @@
+<!-- SEARCH MODAL -->
+<?php get_template_part("template-parts/modal/modal"); ?>
 <!-- FOOTER -->
 <?php get_template_part("template-parts/footer/footer"); ?>
 

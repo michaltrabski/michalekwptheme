@@ -8,9 +8,9 @@
 $args = array(
     'post_type' => 'footer',
     'post_status' => 'publish',
-    'posts_per_page' => -1,
-    'orderby' => 'title',
-    'order' => 'ASC',
+    'posts_per_page' => 1,
+    'orderby' => 'date',
+    'order' => 'DESC',
     // 'cat' => 'home',
 );
 
